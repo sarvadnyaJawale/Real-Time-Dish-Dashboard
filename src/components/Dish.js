@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import 'C:/Users/sarva/Desktop/dish-dashboard/src/App.css';
 
 const Dish = ({ dish }) => {
   const togglePublished = () => {
@@ -8,11 +9,13 @@ const Dish = ({ dish }) => {
   };
 
   return (
-    <div>
-      <h2>{dish.dishName}</h2>
-      <img src={dish.imageUrl} alt={dish.dishName} width="200" />
-      <p>{dish.isPublished ? 'Published' : 'Unpublished'}</p>
-      <button onClick={togglePublished}>
+    <div className={`dish-card ${dish.isPublished ? 'published' : 'unpublished'}`}>
+      <img src={dish.imageUrl} alt={dish.dishName} className="dish-image" />
+      <h2 className="dish-name">{dish.dishName}</h2>
+      <p className={`status ${dish.isPublished ? 'status-published' : 'status-unpublished'}`}>
+        {dish.isPublished ? 'Published' : 'Unpublished'}
+      </p>
+      <button onClick={togglePublished} className="toggle-button">
         {dish.isPublished ? 'Unpublish' : 'Publish'}
       </button>
     </div>

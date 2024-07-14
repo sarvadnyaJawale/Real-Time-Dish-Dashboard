@@ -39,6 +39,17 @@ app.post('/api/dishes/:id/toggle', (req, res) => {
   res.sendStatus(200);
 });
 
+io.on('connection', (socket) => {
+  console.log('A user connected');
+
+  // Emit initial data to the connected client
+  socket.emit('initialData', dishes);
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
+
 server.listen(5000, () => {
   console.log('Server is running on http://localhost:5000');
 });

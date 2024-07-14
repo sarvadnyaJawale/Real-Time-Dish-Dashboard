@@ -1,6 +1,6 @@
 import React from 'react';
 import DishList from './components/DishList';
-import './App.css';
+import 'C:/Users/sarva/Desktop/dish-dashboard/src/App.css';
 
 const App = () => {
   return (
