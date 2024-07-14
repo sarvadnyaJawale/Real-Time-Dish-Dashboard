@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import 'C:/Users/sarva/Desktop/dish-dashboard/src/App.css';
+import '../App.css';
 
 const Dish = ({ dish }) => {
   const togglePublished = () => {
