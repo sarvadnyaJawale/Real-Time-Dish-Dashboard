@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 import Dish from './Dish';
-import 'C:/Users/sarva/Desktop/dish-dashboard/src/App.css';
+import '/home/ubuntu/Real-Time-Dish-Dashboard/src/App.css';
 
 const socket = io('http://localhost:5000');
 
