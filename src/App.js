@@ -1,6 +1,6 @@
 import React from 'react';
 import DishList from './components/DishList';
-import '/home/ubuntu/Real-Time-Dish-Dashboard/src/App.css';
+import './App.css';
 
 const App = () => {
   return (
