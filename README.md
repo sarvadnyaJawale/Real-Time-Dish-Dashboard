@@ -16,6 +16,9 @@ The Real-Time Dish Dashboard is designed to display a list of dishes, allowing u
 - **Node.js:** A JavaScript runtime for building the server-side application.
 - **Socket.IO:** A library for enabling real-time, bidirectional communication between web clients and servers.
 
+![image](https://github.com/user-attachments/assets/af16f976-f339-4272-8698-ad807d4dab70)
+
+
 #### Application Architecture
 
 The application is divided into two main parts:
