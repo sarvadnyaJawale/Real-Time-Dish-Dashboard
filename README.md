@@ -15,7 +15,6 @@ The Real-Time Dish Dashboard is designed to display a list of dishes, allowing u
 - **React.js:** A JavaScript library for building the frontend user interface.
 - **Node.js:** A JavaScript runtime for building the server-side application.
 - **Socket.IO:** A library for enabling real-time, bidirectional communication between web clients and servers.
-- **AWS S3:** For hosting dish images.
 
 #### Application Architecture
 
