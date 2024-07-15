@@ -1,7 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
 const app = express();
 const server = http.createServer(app);
@@ -15,35 +17,58 @@ const io = socketIo(server, {
 app.use(cors());
 app.use(express.json());
 
-let dishes = [
-  { dishId: '1', dishName: 'Jeera Rice', imageUrl: 'https://nosh-assignment.s3.ap-south-1.amazonaws.com/jeera-rice.jpg', isPublished: true },
-  { dishId: '2', dishName: 'Paneer Tikka', imageUrl: 'https://nosh-assignment.s3.ap-south-1.amazonaws.com/paneer-tikka.jpg', isPublished: true },
-  { dishId: '3', dishName: 'Rabdi', imageUrl: 'https://nosh-assignment.s3.ap-south-1.amazonaws.com/rabdi.jpg', isPublished: true },
-  { dishId: '4', dishName: 'Chicken Biryani', imageUrl: 'https://nosh-assignment.s3.ap-south-1.amazonaws.com/chicken-biryani.jpg', isPublished: true },
-  { dishId: '5', dishName: 'Alfredo Pasta', imageUrl: 'https://nosh-assignment.s3.ap-south-1.amazonaws.com/alfredo-pasta.jpg', isPublished: true }
-];
+// MongoDB Atlas connection string from environment variables
+const mongoURI ='mongodb+srv://sarvadnyajawle:SRJawle%40123@cluster0.t1pvzhp.mongodb.net/Data_Dashboard?retryWrites=true&w=majority&appName=Cluster0'
 
-app.get('/api/dishes', (req, res) => {
-  res.json(dishes);
+// Connect to MongoDB
+mongoose.connect(mongoURI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.log('MongoDB connection error:', err));
+
+// Define Mongoose schema and model
+const dishSchema = new mongoose.Schema({
+  dishId: String,
+  dishName: String,
+  imageUrl: String,
+  isPublished: Boolean
 });
 
-app.post('/api/dishes/:id/toggle', (req, res) => {
+const Dish = mongoose.model('Dish', dishSchema);
+
+// Routes
+app.get('/api/dishes', async (req, res) => {
+  try {
+    const dishes = await Dish.find();
+    res.json(dishes);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.post('/api/dishes/:id/toggle', async (req, res) => {
   const dishId = req.params.id;
-  dishes = dishes.map(dish => {
-    if (dish.dishId === dishId) {
+  try {
+    const dish = await Dish.findOne({ dishId });
+    if (dish) {
       dish.isPublished = !dish.isPublished;
+      await dish.save();
       io.emit('dishUpdated', dish);
+      res.sendStatus(200);
+    } else {
+      res.status(404).json({ message: 'Dish not found' });
     }
-    return dish;
-  });
-  res.sendStatus(200);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 io.on('connection', (socket) => {
   console.log('A user connected');
 
   // Emit initial data to the connected client
-  socket.emit('initialData', dishes);
+  Dish.find()
+    .then(dishes => socket.emit('initialData', dishes))
+    .catch(err => console.log(err));
 
   socket.on('disconnect', () => {
     console.log('User disconnected');
