@@ -1,4 +1,4 @@
-### Building a Real-Time Dish Dashboard with the MERN Stack
+# Building a Real-Time Dish Dashboard with the MERN Stack
 
 #### Introduction
 
